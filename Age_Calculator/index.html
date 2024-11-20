@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <h1>JavaScript<br><span>Age Calculator</span></h1>
+            <div class="input-box">
+                <input type="date" id="date">
+                <button onclick="calculateAge()">Calculate</button>
+            </div>
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <script>
+        let userInput = document.getElementById("date");
+        userInput.max = new Date().toISOString().split("T")[0];
+        let result = document.getElementById("result");
+
+        function calculateAge() {
+            let birthDate = new Date(userInput.value);
+            let today = new Date();
+
+            let birthDay = birthDate.getDate();
+            let birthMonth = birthDate.getMonth();
+            let birthYear = birthDate.getFullYear();
+
+            let currentDay = today.getDate();
+            let currentMonth = today.getMonth();
+            let currentYear = today.getFullYear();
+
+            // Calculate year difference
+            let ageYears = currentYear - birthYear;
+
+            // Adjust month and year if current month is before birth month
+            if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
+                ageYears--;
+                currentMonth += 12;
+            }
+
+            // Calculate month difference
+            let ageMonths = currentMonth - birthMonth;
+
+            // Adjust day and month if current day is before birth day
+            if (currentDay < birthDay) {
+                ageMonths--;
+                currentDay += getDaysInMonth(today.getFullYear(), today.getMonth());
+            }
+
+            // Calculate day difference
+            let ageDays = currentDay - birthDay;
+
+            result.innerHTML = `You are <span>${ageYears}</span> years, <span>${ageMonths}</span> months, and <span>${ageDays}</span> days old`;
+        }
+
+        function getDaysInMonth(year, month) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+    </script>
+
+</body>
+</html>
